@@ -29,25 +29,26 @@ int main()
     tm.stop_show_sec(" ");
   }
 
+  cout << "Testing TimeMeasure::call_show_sec (1)...";
+  TimeMeasure::call_show_sec([]() { std::this_thread::sleep_for(1s); }, " ");
+
+  TimeMeasure::call_show_sec("Testing TimeMeasure::call_show_sec (2)...", []() { std::this_thread::sleep_for(1s); }, " ");
+
+  cout << "Testing TimeMeasure::call + TimeMeasure::show_sec...";
+  Duration result = TimeMeasure::call([]() { std::this_thread::sleep_for(1s); });
+  TimeMeasure::show_sec(result, " ");
+
   {
     cout << "Testing TimeMeasureScoped struct (auto display)...";
     TimeMeasureScoped tm(" ");
     std::this_thread::sleep_for(1s);
   }
 
-  Duration result;
   {
     cout << "Testing TimeMeasureScoped struct (auto assign) + TimeMeasure::show_sec...";
     TimeMeasureScoped tm(result);
     std::this_thread::sleep_for(1s);
   }
-  TimeMeasure::show_sec(result, " ");
-
-  cout << "Testing TimeMeasure::call_show_sec...";
-  TimeMeasure::call_show_sec([]() { std::this_thread::sleep_for(1s); }, " ");
-
-  cout << "Testing TimeMeasure::call + TimeMeasure::show_sec...";
-  result = TimeMeasure::call([]() { std::this_thread::sleep_for(1s); });
   TimeMeasure::show_sec(result, " ");
 
   return 0;

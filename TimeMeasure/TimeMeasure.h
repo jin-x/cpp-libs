@@ -22,7 +22,7 @@ v1.10 (18.05.2019):
   [+] Добавлен класс (структура) TimeMeasureScoped для замера времени выполнения кода внутри области видимости, т.е.
       выполняющий получение результата или вывод времени в деструкторе.
   [*] Метод show_time переименован в show_sec, а stop_and_show - в stop_show_sec.
-  [+] Добавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec.
+  [+] Добавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec (2 варианта).
   [*] Ключевое слово class заменено на struct.
   [*] Возвращаемый тип методов TimeMeasure::stop, TimeMeasure::show_sec и TimeMeasure::stop_show_sec заменён с double
       на auto (фактически std::chrono::high_resolution_clock::duration).
@@ -131,6 +131,14 @@ namespace the {
 
     // Выполнить функцию func, вывести и вернуть время её выполнения (Duration).
     static auto call_show_sec(const std::function<void()> func, const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+      TimeMeasure tm;
+      func();
+      return tm.show_sec(prefix_text, suffix_text, stream);
+    }
+
+    // Вывести строку pre_text, выполнить функцию func, вывести и вернуть время её выполнения (Duration).
+    static auto call_show_sec(const char* pre_text, const std::function<void()> func, const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+      stream << pre_text;
       TimeMeasure tm;
       func();
       return tm.show_sec(prefix_text, suffix_text, stream);
