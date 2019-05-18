@@ -26,6 +26,7 @@ v1.10 (18.05.2019):
   [*] Ключевое слово class заменено на struct.
   [*] Возвращаемый тип методов TimeMeasure::stop, TimeMeasure::show_sec и TimeMeasure::stop_show_sec заменён с double
       на auto (фактически std::chrono::high_resolution_clock::duration).
+  [+] Добавлены константы DEFAULT_PREFIX_SEC_TEXT и DEFAULT_SUFFIX_SEC_TEXT.
 
 v1.00 (11.05.2019):
   [!] Первая версия (содержит только класс TimeMeasure).
@@ -47,7 +48,13 @@ v1.00 (11.05.2019):
 
 namespace the {
 
+
+  // Тип для хранения интервала времени.
   using Duration = std::chrono::high_resolution_clock::duration;
+
+  // Текст префикса и суффикса для вывода времени по умолчанию.
+  const char* DEFAULT_PREFIX_SEC_TEXT = "";
+  const char* DEFAULT_SUFFIX_SEC_TEXT = " sec\n";
 
   // Класс для замера времени выполнения кода.
   struct TimeMeasure
@@ -105,19 +112,19 @@ namespace the {
     }
 
     // Вывести в stream (по умолчанию в консоль) интервал времени Duration в секундах.
-    static void show_sec(const Duration duration, const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+    static void show_sec(const Duration duration, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stream << prefix_text << std::chrono::duration_cast<std::chrono::duration<double>>(duration).count() << suffix_text;
     }
 
     // Вывести в stream (по умолчанию в консоль) прошедшее на текущий момент время в секундах (double).
-    auto show_sec(const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+    auto show_sec(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       auto duration = get_duration();
       show_sec(duration, prefix_text, suffix_text, stream);
       return duration;
     }
 
     // Остановить таймер и вывести в stream (по умолчанию в консоль) прошедшее время в секундах (double).
-    auto stop_show_sec(const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+    auto stop_show_sec(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stop();
       return show_sec(prefix_text, suffix_text, stream);
     }
@@ -130,14 +137,14 @@ namespace the {
     }
 
     // Выполнить функцию func, вывести и вернуть время её выполнения (Duration).
-    static auto call_show_sec(const std::function<void()> func, const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+    static auto call_show_sec(const std::function<void()> func, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       TimeMeasure tm;
       func();
       return tm.show_sec(prefix_text, suffix_text, stream);
     }
 
     // Вывести строку pre_text, выполнить функцию func, вывести и вернуть время её выполнения (Duration).
-    static auto call_show_sec(const char* pre_text, const std::function<void()> func, const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) {
+    static auto call_show_sec(const char* pre_text, const std::function<void()> func, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stream << pre_text;
       TimeMeasure tm;
       func();
@@ -161,11 +168,11 @@ namespace the {
     TimeMeasureScoped(Duration& result) : _result(&result), _show_message(false) { }
 
     // Запустить таймер и задать переменную для получения результата и сообщения для вывода после выхода из области видимости (в деструкторе).
-    TimeMeasureScoped(Duration& result, const char* prefix_text, const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
+    TimeMeasureScoped(Duration& result, const char* prefix_text, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) :
       _result(&result), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
     // Запустить таймер и задать сообщения для вывода после выхода из области видимости (в деструкторе).
-    TimeMeasureScoped(const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
+    TimeMeasureScoped(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) :
       _result(nullptr), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
     // Деструктор.
@@ -183,6 +190,7 @@ namespace the {
     std::ostream* _stream;
 
   }; // class TimeMeasureScoped
+
 
 }; // namespace the
 

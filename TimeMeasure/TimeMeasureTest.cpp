@@ -13,6 +13,7 @@
 
 #include <thread>
 #include <chrono>
+#include <fstream>
 #include "TimeMeasure.h"
 
 using namespace the;  // TimeMeasure.h
@@ -50,6 +51,16 @@ int main()
     std::this_thread::sleep_for(1s);
   }
   TimeMeasure::show_sec(result, " ");
+
+  cout << "Testing TimeMeasure::call_show_sec (to file)...";
+  std::ofstream file("TimeMeasureTest_result.txt");
+  if (file) {
+    TimeMeasure::call_show_sec([]() { std::this_thread::sleep_for(1s); }, "Elapsed time is ", DEFAULT_SUFFIX_SEC_TEXT, file);
+    file.close();
+    cout << " ok (file \"TimeMeasureTest_result.txt\" is created)\n";
+  } else {
+    cout << " file create error!\n";
+  }
 
   return 0;
 }
