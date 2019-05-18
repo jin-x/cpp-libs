@@ -18,15 +18,15 @@
 
 v1.10 (18.05.2019):
   [!] Всё содержимое заключено в пространство имён the.
-  [+] Добавлено объявление алиаса Duration для типа std::chrono::high_resolution_clock::duration.
   [+] Добавлен класс (структура) TimeMeasureScoped для замера времени выполнения кода внутри области видимости, т.е.
       выполняющий получение результата или вывод времени в деструкторе.
   [*] Метод show_time переименован в show_sec, а stop_and_show - в stop_show_sec.
   [+] Добавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec (2 варианта).
-  [*] Ключевое слово class заменено на struct.
+  [+] Добавлено объявление алиаса Duration для типа std::chrono::high_resolution_clock::duration.
   [*] Возвращаемый тип методов TimeMeasure::stop, TimeMeasure::show_sec и TimeMeasure::stop_show_sec заменён с double
       на auto (фактически std::chrono::high_resolution_clock::duration).
   [+] Добавлены константы DEFAULT_PREFIX_SEC_TEXT и DEFAULT_SUFFIX_SEC_TEXT.
+  [*] Ключевое слово class заменено на struct.
 
 v1.00 (11.05.2019):
   [!] Первая версия (содержит только класс TimeMeasure).
