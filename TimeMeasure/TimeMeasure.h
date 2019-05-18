@@ -24,7 +24,7 @@ v1.10 (18.05.2019):
   [+] Добавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec (2 варианта).
   [+] Добавлено объявление алиаса Duration для типа std::chrono::high_resolution_clock::duration.
   [*] Возвращаемый тип методов TimeMeasure::stop, TimeMeasure::show_sec и TimeMeasure::stop_show_sec заменён с double
-      на auto (фактически std::chrono::high_resolution_clock::duration).
+      на auto (фактически Duration).
   [+] Добавлены константы DEFAULT_PREFIX_SEC_TEXT и DEFAULT_SUFFIX_SEC_TEXT.
   [*] Ключевое слово class заменено на struct.
 
