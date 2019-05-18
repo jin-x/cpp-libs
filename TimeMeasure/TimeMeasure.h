@@ -14,22 +14,22 @@
 
 /***********************************************************************************************************************
 
-ИСТОРИЯ ИЗМЕНЕНИЙ
+РРЎРўРћР РРЇ РР—РњР•РќР•РќРР™
 
 v1.10 (18.05.2019):
-  [!] Всё содержимое заключено в пространство имён the.
-  [+] Добавлен класс (структура) TimeMeasureScoped для замера времени выполнения кода внутри области видимости, т.е.
-      выполняющий получение результата или вывод времени в деструкторе.
-  [*] Метод show_time переименован в show_sec, а stop_and_show - в stop_show_sec.
-  [+] Добавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec (2 варианта).
-  [+] Добавлено объявление алиаса Duration для типа std::chrono::high_resolution_clock::duration.
-  [*] Возвращаемый тип методов TimeMeasure::stop, TimeMeasure::show_sec и TimeMeasure::stop_show_sec заменён с double
-      на auto (фактически Duration).
-  [+] Добавлены константы DEFAULT_PREFIX_SEC_TEXT и DEFAULT_SUFFIX_SEC_TEXT.
-  [*] Ключевое слово class заменено на struct.
+  [!] Р’СЃС‘ СЃРѕРґРµСЂР¶РёРјРѕРµ Р·Р°РєР»СЋС‡РµРЅРѕ РІ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ the.
+  [+] Р”РѕР±Р°РІР»РµРЅ РєР»Р°СЃСЃ (СЃС‚СЂСѓРєС‚СѓСЂР°) TimeMeasureScoped РґР»СЏ Р·Р°РјРµСЂР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРґР° РІРЅСѓС‚СЂРё РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё, С‚.Рµ.
+      РІС‹РїРѕР»РЅСЏСЋС‰РёР№ РїРѕР»СѓС‡РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° РёР»Рё РІС‹РІРѕРґ РІСЂРµРјРµРЅРё РІ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ.
+  [*] РњРµС‚РѕРґ show_time РїРµСЂРµРёРјРµРЅРѕРІР°РЅ РІ show_sec, Р° stop_and_show - РІ stop_show_sec.
+  [+] Р”РѕР±Р°РІР»РµРЅС‹ СЃС‚Р°С‚РёС‡РµСЃРєРёРµ РјРµС‚РѕРґС‹ TimeMeasure::show_sec, TimeMeasure::call Рё TimeMeasure::call_show_sec (2 РІР°СЂРёР°РЅС‚Р°).
+  [+] Р”РѕР±Р°РІР»РµРЅРѕ РѕР±СЉСЏРІР»РµРЅРёРµ Р°Р»РёР°СЃР° Duration РґР»СЏ С‚РёРїР° std::chrono::high_resolution_clock::duration.
+  [*] Р’РѕР·РІСЂР°С‰Р°РµРјС‹Р№ С‚РёРї РјРµС‚РѕРґРѕРІ TimeMeasure::stop, TimeMeasure::show_sec Рё TimeMeasure::stop_show_sec Р·Р°РјРµРЅС‘РЅ СЃ double
+      РЅР° auto (С„Р°РєС‚РёС‡РµСЃРєРё Duration).
+  [+] Р”РѕР±Р°РІР»РµРЅС‹ РєРѕРЅСЃС‚Р°РЅС‚С‹ DEFAULT_PREFIX_SEC_TEXT Рё DEFAULT_SUFFIX_SEC_TEXT.
+  [*] РљР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ class Р·Р°РјРµРЅРµРЅРѕ РЅР° struct.
 
 v1.00 (11.05.2019):
-  [!] Первая версия (содержит только класс TimeMeasure).
+  [!] РџРµСЂРІР°СЏ РІРµСЂСЃРёСЏ (СЃРѕРґРµСЂР¶РёС‚ С‚РѕР»СЊРєРѕ РєР»Р°СЃСЃ TimeMeasure).
 
 ***********************************************************************************************************************/
 
@@ -49,61 +49,61 @@ v1.00 (11.05.2019):
 namespace the {
 
 
-  // Тип для хранения интервала времени.
+  // РўРёРї РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РёРЅС‚РµСЂРІР°Р»Р° РІСЂРµРјРµРЅРё.
   using Duration = std::chrono::high_resolution_clock::duration;
 
-  // Текст префикса и суффикса для вывода времени по умолчанию.
+  // РўРµРєСЃС‚ РїСЂРµС„РёРєСЃР° Рё СЃСѓС„С„РёРєСЃР° РґР»СЏ РІС‹РІРѕРґР° РІСЂРµРјРµРЅРё РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
   const char* DEFAULT_PREFIX_SEC_TEXT = "";
   const char* DEFAULT_SUFFIX_SEC_TEXT = " sec\n";
 
-  // Класс для замера времени выполнения кода.
+  // РљР»Р°СЃСЃ РґР»СЏ Р·Р°РјРµСЂР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРґР°.
   struct TimeMeasure
   {
 
-    // Запустить таймер.
+    // Р—Р°РїСѓСЃС‚РёС‚СЊ С‚Р°Р№РјРµСЂ.
     TimeMeasure() {
       restart();
     }
 
-    // Получить прошедшее на текущий момент время (Duration).
+    // РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ (Duration).
     auto get_duration() {
       return (_running ? std::chrono::high_resolution_clock::now() : _stop_time) - _start_time;
     }
 
-    // Получить прошедшее на текущий момент время в секундах.
+    // РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ РІ СЃРµРєСѓРЅРґР°С….
     double get_sec() {
       return std::chrono::duration_cast<std::chrono::duration<double>>(get_duration()).count();
     }
 
-    // Получить прошедшее на текущий момент время в миллисекундах.
+    // РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С….
     auto get_millisec() {
       return std::chrono::duration_cast<std::chrono::milliseconds>(get_duration()).count();
     }
 
-    // Получить прошедшее на текущий момент время в микросекундах.
+    // РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ РІ РјРёРєСЂРѕСЃРµРєСѓРЅРґР°С….
     auto get_microsec() {
       return std::chrono::duration_cast<std::chrono::microseconds>(get_duration()).count();
     }
 
-    // Получить прошедшее на текущий момент время в наносекундах.
+    // РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ РІ РЅР°РЅРѕСЃРµРєСѓРЅРґР°С….
     auto get_nanosec() {
       return std::chrono::duration_cast<std::chrono::nanoseconds>(get_duration()).count();
     }
 
-    // Перезапустить таймер заново.
+    // РџРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ С‚Р°Р№РјРµСЂ Р·Р°РЅРѕРІРѕ.
     void restart() {
       _running = true;
       _start_time = std::chrono::high_resolution_clock::now();
     }
 
-    // Остановить таймер (если уже был остановлен, установить новую точку остановки) и получить прошедшее время (Duration).
+    // РћСЃС‚Р°РЅРѕРІРёС‚СЊ С‚Р°Р№РјРµСЂ (РµСЃР»Рё СѓР¶Рµ Р±С‹Р» РѕСЃС‚Р°РЅРѕРІР»РµРЅ, СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РЅРѕРІСѓСЋ С‚РѕС‡РєСѓ РѕСЃС‚Р°РЅРѕРІРєРё) Рё РїРѕР»СѓС‡РёС‚СЊ РїСЂРѕС€РµРґС€РµРµ РІСЂРµРјСЏ (Duration).
     auto stop() {
       _stop_time = std::chrono::high_resolution_clock::now();
       _running = false;
       return get_duration();
     }
 
-    // Продолжить (если был остановлен).
+    // РџСЂРѕРґРѕР»Р¶РёС‚СЊ (РµСЃР»Рё Р±С‹Р» РѕСЃС‚Р°РЅРѕРІР»РµРЅ).
     void resume() {
       if (!_running) {
         _running = true;
@@ -111,39 +111,39 @@ namespace the {
       }
     }
 
-    // Вывести в stream (по умолчанию в консоль) интервал времени Duration в секундах.
+    // Р’С‹РІРµСЃС‚Рё РІ stream (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РєРѕРЅСЃРѕР»СЊ) РёРЅС‚РµСЂРІР°Р» РІСЂРµРјРµРЅРё Duration РІ СЃРµРєСѓРЅРґР°С….
     static void show_sec(const Duration duration, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stream << prefix_text << std::chrono::duration_cast<std::chrono::duration<double>>(duration).count() << suffix_text;
     }
 
-    // Вывести в stream (по умолчанию в консоль) прошедшее на текущий момент время в секундах (double).
+    // Р’С‹РІРµСЃС‚Рё РІ stream (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РєРѕРЅСЃРѕР»СЊ) РїСЂРѕС€РµРґС€РµРµ РЅР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ РІСЂРµРјСЏ РІ СЃРµРєСѓРЅРґР°С… (double).
     auto show_sec(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       auto duration = get_duration();
       show_sec(duration, prefix_text, suffix_text, stream);
       return duration;
     }
 
-    // Остановить таймер и вывести в stream (по умолчанию в консоль) прошедшее время в секундах (double).
+    // РћСЃС‚Р°РЅРѕРІРёС‚СЊ С‚Р°Р№РјРµСЂ Рё РІС‹РІРµСЃС‚Рё РІ stream (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РєРѕРЅСЃРѕР»СЊ) РїСЂРѕС€РµРґС€РµРµ РІСЂРµРјСЏ РІ СЃРµРєСѓРЅРґР°С… (double).
     auto stop_show_sec(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stop();
       return show_sec(prefix_text, suffix_text, stream);
     }
 
-    // Выполнить функцию func и вернуть время её выполнения (Duration).
+    // Р’С‹РїРѕР»РЅРёС‚СЊ С„СѓРЅРєС†РёСЋ func Рё РІРµСЂРЅСѓС‚СЊ РІСЂРµРјСЏ РµС‘ РІС‹РїРѕР»РЅРµРЅРёСЏ (Duration).
     static auto call(const std::function<void()> func) {
       TimeMeasure tm;
       func();
       return tm.get_duration();
     }
 
-    // Выполнить функцию func, вывести и вернуть время её выполнения (Duration).
+    // Р’С‹РїРѕР»РЅРёС‚СЊ С„СѓРЅРєС†РёСЋ func, РІС‹РІРµСЃС‚Рё Рё РІРµСЂРЅСѓС‚СЊ РІСЂРµРјСЏ РµС‘ РІС‹РїРѕР»РЅРµРЅРёСЏ (Duration).
     static auto call_show_sec(const std::function<void()> func, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       TimeMeasure tm;
       func();
       return tm.show_sec(prefix_text, suffix_text, stream);
     }
 
-    // Вывести строку pre_text, выполнить функцию func, вывести и вернуть время её выполнения (Duration).
+    // Р’С‹РІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ pre_text, РІС‹РїРѕР»РЅРёС‚СЊ С„СѓРЅРєС†РёСЋ func, РІС‹РІРµСЃС‚Рё Рё РІРµСЂРЅСѓС‚СЊ РІСЂРµРјСЏ РµС‘ РІС‹РїРѕР»РЅРµРЅРёСЏ (Duration).
     static auto call_show_sec(const char* pre_text, const std::function<void()> func, const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) {
       stream << pre_text;
       TimeMeasure tm;
@@ -161,21 +161,21 @@ namespace the {
 /**********************************************************************************************************************/
 
 
-  // Класс для замера времени выполнения кода внутри области видимости.
+  // РљР»Р°СЃСЃ РґР»СЏ Р·Р°РјРµСЂР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРґР° РІРЅСѓС‚СЂРё РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё.
   struct TimeMeasureScoped : TimeMeasure
   {
-    // Запустить таймер и задать переменную для получения результата после выхода из области видимости (в деструкторе).
+    // Р—Р°РїСѓСЃС‚РёС‚СЊ С‚Р°Р№РјРµСЂ Рё Р·Р°РґР°С‚СЊ РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р° РїРѕСЃР»Рµ РІС‹С…РѕРґР° РёР· РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё (РІ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ).
     TimeMeasureScoped(Duration& result) : _result(&result), _show_message(false) { }
 
-    // Запустить таймер и задать переменную для получения результата и сообщения для вывода после выхода из области видимости (в деструкторе).
+    // Р—Р°РїСѓСЃС‚РёС‚СЊ С‚Р°Р№РјРµСЂ Рё Р·Р°РґР°С‚СЊ РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р° Рё СЃРѕРѕР±С‰РµРЅРёСЏ РґР»СЏ РІС‹РІРѕРґР° РїРѕСЃР»Рµ РІС‹С…РѕРґР° РёР· РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё (РІ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ).
     TimeMeasureScoped(Duration& result, const char* prefix_text, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) :
       _result(&result), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
-    // Запустить таймер и задать сообщения для вывода после выхода из области видимости (в деструкторе).
+    // Р—Р°РїСѓСЃС‚РёС‚СЊ С‚Р°Р№РјРµСЂ Рё Р·Р°РґР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ РґР»СЏ РІС‹РІРѕРґР° РїРѕСЃР»Рµ РІС‹С…РѕРґР° РёР· РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё (РІ РґРµСЃС‚СЂСѓРєС‚РѕСЂРµ).
     TimeMeasureScoped(const char* prefix_text = DEFAULT_PREFIX_SEC_TEXT, const char* suffix_text = DEFAULT_SUFFIX_SEC_TEXT, std::ostream& stream = std::cout) :
       _result(nullptr), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
-    // Деструктор.
+    // Р”РµСЃС‚СЂСѓРєС‚РѕСЂ.
     ~TimeMeasureScoped() {
       stop();
       if (_result) { *_result = get_duration(); }
