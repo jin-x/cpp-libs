@@ -30,15 +30,15 @@ int main()
   }
 
   {
-    cout << "Testing ScopedTimeMeasure struct (auto display)...";
-    ScopedTimeMeasure tm(" ");
+    cout << "Testing TimeMeasureScoped struct (auto display)...";
+    TimeMeasureScoped tm(" ");
     std::this_thread::sleep_for(1s);
   }
 
   Duration result;
   {
-    cout << "Testing ScopedTimeMeasure struct (auto assign) + TimeMeasure::show_sec...";
-    ScopedTimeMeasure tm(result);
+    cout << "Testing TimeMeasureScoped struct (auto assign) + TimeMeasure::show_sec...";
+    TimeMeasureScoped tm(result);
     std::this_thread::sleep_for(1s);
   }
   TimeMeasure::show_sec(result, " ");

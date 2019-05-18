@@ -19,7 +19,7 @@
 v1.10 (18.05.2019):
   [!] ¬сЄ содержимое заключено в пространство имЄн the.
   [+] ƒобавлено объ€вление алиаса Duration дл€ типа std::chrono::high_resolution_clock::duration.
-  [+] ƒобавлен класс (структура) ScopedTimeMeasure дл€ замера времени выполнени€ кода внутри области видимости, т.е.
+  [+] ƒобавлен класс (структура) TimeMeasureScoped дл€ замера времени выполнени€ кода внутри области видимости, т.е.
       выполн€ющий получение результата или вывод времени в деструкторе.
   [*] ћетод show_time переименован в show_sec, а stop_and_show - в stop_show_sec.
   [+] ƒобавлены статические методы TimeMeasure::show_sec, TimeMeasure::call и TimeMeasure::call_show_sec.
@@ -147,21 +147,21 @@ namespace the {
 
 
   //  ласс дл€ замера времени выполнени€ кода внутри области видимости.
-  struct ScopedTimeMeasure : TimeMeasure
+  struct TimeMeasureScoped : TimeMeasure
   {
     // «апустить таймер и задать переменную дл€ получени€ результата после выхода из области видимости (в деструкторе).
-    ScopedTimeMeasure(Duration& result) : _result(&result), _show_message(false) { }
+    TimeMeasureScoped(Duration& result) : _result(&result), _show_message(false) { }
 
     // «апустить таймер и задать переменную дл€ получени€ результата и сообщени€ дл€ вывода после выхода из области видимости (в деструкторе).
-    ScopedTimeMeasure(Duration& result, const char* prefix_text, const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
+    TimeMeasureScoped(Duration& result, const char* prefix_text, const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
       _result(&result), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
     // «апустить таймер и задать сообщени€ дл€ вывода после выхода из области видимости (в деструкторе).
-    ScopedTimeMeasure(const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
+    TimeMeasureScoped(const char* prefix_text = "", const char* suffix_text = " sec\n", std::ostream& stream = std::cout) :
       _result(nullptr), _show_message(true), _prefix_text(prefix_text), _suffix_text(suffix_text), _stream(&stream) { }
 
     // ƒеструктор.
-    ~ScopedTimeMeasure() {
+    ~TimeMeasureScoped() {
       stop();
       if (_result) { *_result = get_duration(); }
       if (_show_message) { show_sec(_prefix_text, _suffix_text, *_stream); }
@@ -174,7 +174,7 @@ namespace the {
     const char* _suffix_text;
     std::ostream* _stream;
 
-  }; // class ScopedTimeMeasure
+  }; // class TimeMeasureScoped
 
 }; // namespace the
 
