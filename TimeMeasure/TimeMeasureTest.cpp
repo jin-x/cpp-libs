@@ -3,7 +3,7 @@
 //    [ TimeMeasure Test ] for C++     //
 //            version 1.10             //
 //                                     //
-//         http://xk7.ru/p/c/l         //
+//   http://xk7.ru/p/c/l/TimeMeasure   //
 //                                     //
 /////////////////////////////////////////
 //                                     //
