@@ -1,0 +1,30 @@
+/////////////////////////////////////////
+//                                     //
+//       [ TimeMeasure ] for C++       //
+//            version 1.10             //
+//                                     //
+//   http://xk7.ru/p/c/l/TimeMeasure   //
+//                                     //
+/////////////////////////////////////////
+//                                     //
+//  (c) 2019 by Jin X (jin_x@list.ru)  //
+//                                     //
+/////////////////////////////////////////
+
+
+[ VERSION HISTORY ]
+
+v1.10 (18.05.2019):
+  [*] Comments are translated from Russian into English :)
+  [!] Everything is enclosed to namespace 'the'.
+  [!] Added class 'TimeMeasureScoped' to measure time of code inside a scope (returns duration or/and sends a message to stream in destructor).
+  [*] Method 'show_time' is renamed to 'show_sec', method 'stop_and_show' is renamed to 'stop_show_sec'.
+  [+] Added static methods 'TimeMeasure::show_sec', 'TimeMeasure::call' and 'TimeMeasure::call_show_sec' (two overloaded variants).
+  [+] Added 'Duration' alias declaration for 'std::chrono::high_resolution_clock::duration' type.
+  [+] Added 'is_running' method in 'TimeMeasure' class and overloaded operators/types: explicit 'bool' (running status), '!' (stopped status), 'Duration' (duration) and 'double' (duration in seconds).
+  [*] Return type of 'TimeMeasure::stop', 'TimeMeasure::show_sec' and 'TimeMeasure::stop_show_sec' methods is changed from 'double' to 'auto' ('Duration' in fact).
+  [*] 'const char*' type in method parameters replaced by 'const std::string'.
+  [+] Added constants 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT'.
+
+v1.00 (11.05.2019):
+  [!] The first version (contains 'TimeMeasure' class only).
