@@ -1,7 +1,7 @@
 /////////////////////////////////////////
 //                                     //
 //  [ TimeMeasure Examples ] for C++   //
-//            version 1.10             //
+//            version 1.11             //
 //                                     //
 //   http://xk7.ru/p/c/l/TimeMeasure   //
 //                                     //
@@ -25,8 +25,8 @@ int main()
   using std::cout;
 
   const auto test_code = []() {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  };
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    };
   std::string timer_status[] { "running", "stopped" };
 
   cout << "One second delay time measurement examples!\n";
@@ -61,7 +61,7 @@ int main()
 
   // Example 5
   cout << "TimeMeasure::call + TimeMeasure::show_sec...";
-  Duration duration = TimeMeasure::call(test_code);
+  TimeMeasure::Duration duration = TimeMeasure::call(test_code);
   TimeMeasure::show_sec(duration, " ");
 
   // Example 6
@@ -81,12 +81,12 @@ int main()
 
   // Example 8
   cout << "TimeMeasure::call_show_sec (to file)...";
-  const std::string filename = "TimeMeasureExamples_result.txt";
+  #define filename "TimeMeasureExamples_result.txt"
   std::ofstream file(filename);
   if (file) {
     duration = TimeMeasure::call_show_sec(test_code, "Elapsed time is ", DEFAULT_SUFFIX_SEC_TEXT, file);
     file.close();
-    the::TimeMeasure::show_sec(duration, " ok (file \"" + filename + "\" is created, elapsed time: ", " sec)\n");
+    the::TimeMeasure::show_sec(duration, " ok (file \"" filename "\" is created, elapsed time: ", " sec)\n");
   } else {
     cout << " file create error!\n";
   }

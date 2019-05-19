@@ -1,7 +1,7 @@
 /////////////////////////////////////////
 //                                     //
 //       [ TimeMeasure ] for C++       //
-//            version 1.10             //
+//            version 1.11             //
 //                                     //
 //   http://xk7.ru/p/c/l/TimeMeasure   //
 //                                     //
@@ -14,16 +14,23 @@
 
 [ VERSION HISTORY ]
 
+v1.11 (19.05.2019):
+  [*] Intermediate class 'internal::TimeMeasureScoped_base' is created (for internal use). This class allows initializing attributes before timer run in 'TimeMeasureScoped' class to improve measurement accuracy (base-from-member idiom).
+  [*] 'Duration' type is enclosed to 'TimeMeasure' class (and redeclared as alias of 'Clock::duration').
+  [+] Added 'TimeMeasure::Clock' type alias declaration of 'std::chrono::high_resolution_clock' (if it's steady) or 'std::chrono::steady_clock' (otherwise).
+  [-] Fix: now pass-by-reference is used in all 'std::string' parameters (to avoid useless copying and increase speed).
+  [*] 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT' identifiers are redeclared as macros for more flexibility of use.
+
 v1.10 (18.05.2019):
   [*] Comments are translated from Russian into English :)
   [!] Everything is enclosed to namespace 'the'.
   [!] Added class 'TimeMeasureScoped' to measure time of code inside a scope (returns duration or/and sends a message to stream in destructor).
   [*] Method 'show_time' is renamed to 'show_sec', method 'stop_and_show' is renamed to 'stop_show_sec'.
-  [+] Added static methods 'TimeMeasure::show_sec', 'TimeMeasure::call' and 'TimeMeasure::call_show_sec' (two overloaded variants).
-  [+] Added 'Duration' alias declaration for 'std::chrono::high_resolution_clock::duration' type.
-  [+] Added 'is_running' method in 'TimeMeasure' class and overloaded operators/types: explicit 'bool' (running status), '!' (stopped status), 'Duration' (duration) and 'double' (duration in seconds).
+  [+] Added static methods 'TimeMeasure::show_sec', 'TimeMeasure::call' and 'TimeMeasure::call_show_sec' (the last is in two overloaded variants).
+  [+] Added 'Duration' type alias declaration of 'std::chrono::high_resolution_clock::duration'.
+  [+] Added 'is_running' method in 'TimeMeasure' class and overloaded operators / type conversions: explicit 'bool' (get running status), '!' (get stopped status), 'Duration' (get duration) and 'double' (get duration in seconds).
   [*] Return type of 'TimeMeasure::stop', 'TimeMeasure::show_sec' and 'TimeMeasure::stop_show_sec' methods is changed from 'double' to 'auto' ('Duration' in fact).
-  [*] 'const char*' type in method parameters replaced by 'const std::string'.
+  [-] Fix: 'const char*' type of all parameters and attributes is replaced by 'const std::string'.
   [+] Added constants 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT'.
 
 v1.00 (11.05.2019):
