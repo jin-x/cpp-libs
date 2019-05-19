@@ -19,7 +19,9 @@ v1.11 (19.05.2019):
   [*] 'Duration' type is enclosed to 'TimeMeasure' class (and redeclared as alias of 'Clock::duration').
   [+] Added 'TimeMeasure::Clock' type alias declaration of 'std::chrono::high_resolution_clock' (if it's steady) or 'std::chrono::steady_clock' (otherwise).
   [-] Fix: now pass-by-reference is used in all 'std::string' parameters (to avoid useless copying and increase speed).
-  [*] 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT' identifiers are redeclared as macros for more flexibility of use.
+  [*] Added 'const' and 'noexcept' specifiers.
+  [*] 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT' constants are renamed to 'TIMEMEASURE_DEFAULT_PREFIX_SEC_TEXT' and 'TIMEMEASURE_DEFAULT_SUFFIX_SEC_TEXT' and redeclared as macros for more flexibility of use.
+  [*] Some other minor changes, optimizations and code restyling :)
 
 v1.10 (18.05.2019):
   [*] Comments are translated from Russian into English :)
@@ -32,6 +34,7 @@ v1.10 (18.05.2019):
   [*] Return type of 'TimeMeasure::stop', 'TimeMeasure::show_sec' and 'TimeMeasure::stop_show_sec' methods is changed from 'double' to 'auto' ('Duration' in fact).
   [-] Fix: 'const char*' type of all parameters and attributes is replaced by 'const std::string'.
   [+] Added constants 'DEFAULT_PREFIX_SEC_TEXT' and 'DEFAULT_SUFFIX_SEC_TEXT'.
+  [*] Some other minor changes, optimizations and code restyling :)
 
 v1.00 (11.05.2019):
   [!] The first version (contains 'TimeMeasure' class only).

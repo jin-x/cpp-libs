@@ -27,7 +27,7 @@ int main()
   const auto test_code = []() {
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     };
-  std::string timer_status[] { "running", "stopped" };
+  const std::string timer_status[] { "running", "stopped" };
 
   cout << "One second delay time measurement examples!\n";
 
@@ -67,14 +67,14 @@ int main()
   // Example 6
   {
     cout << "TimeMeasureScoped class (auto display)...";
-    TimeMeasureScoped tm(" ");
+    const TimeMeasureScoped tm(" ");
     test_code();
   }
 
   // Example 7
   {
     cout << "TimeMeasureScoped class (auto assign) + TimeMeasure::show_sec...";
-    TimeMeasureScoped tm(duration);
+    const TimeMeasureScoped tm(duration);
     test_code();
   }
   TimeMeasure::show_sec(duration, " ");
@@ -84,7 +84,7 @@ int main()
   #define filename "TimeMeasureExamples_result.txt"
   std::ofstream file(filename);
   if (file) {
-    duration = TimeMeasure::call_show_sec(test_code, "Elapsed time is ", DEFAULT_SUFFIX_SEC_TEXT, file);
+    duration = TimeMeasure::call_show_sec(test_code, "Elapsed time is ", TIMEMEASURE_DEFAULT_SUFFIX_SEC_TEXT, file);
     file.close();
     the::TimeMeasure::show_sec(duration, " ok (file \"" filename "\" is created, elapsed time: ", " sec)\n");
   } else {
